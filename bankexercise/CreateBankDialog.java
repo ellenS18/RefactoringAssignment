@@ -37,7 +37,6 @@ public class CreateBankDialog extends JFrame {
 	JLabel accountIDLabel, accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
 	
 	
-	JComboBox comboBox;
 	JTextField accountNumberTextField;
 	final JTextField firstNameTextField, surnameTextField, accountTypeTextField, balanceTextField, overdraftTextField;
 	
@@ -59,7 +58,7 @@ public class CreateBankDialog extends JFrame {
 		
 		String[] comboTypes = {"Current", "Deposit"};
 		
-		final JComboBox comboBox = new JComboBox(comboTypes);
+		final JComboBox<String> comboBox = new JComboBox<>(comboTypes);
 		
 		
 		accountNumberLabel = new JLabel("Photograph file name: ");
