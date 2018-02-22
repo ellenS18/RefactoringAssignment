@@ -334,7 +334,6 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e){
 		
 				JFrame frame = new JFrame("TableDemo");
-				JPanel pan = new JPanel();
 			
 		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				String col[] = {"ID","Number","Name", "Account Type", "Balance", "Overdraft"};
@@ -478,16 +477,23 @@ public class BankApplication extends JFrame {
 		withdraw.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
-				String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
-				boolean found;
+				boolean found = false;
 				
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-					
-
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						//comment out both found statements and test the withdraw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						found = true;
+						String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
 						
+				/*		entry.getValue().setBalance(entry.getValue().getBalance() + Double.parseDouble(toWithdraw));
+						displayDetails(entry.getKey());
+						//balanceTextField.setText(entry.getValue().getBalance()+"");
+					}
+				}
+				if (!found)
+					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
+			
+						*/
 						if(entry.getValue().getAccountType().trim().equals("Current")){
 							if(Double.parseDouble(toWithdraw) > entry.getValue().getBalance() + entry.getValue().getOverdraft())
 								JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
