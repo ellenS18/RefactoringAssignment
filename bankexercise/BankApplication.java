@@ -12,7 +12,7 @@ public class BankApplication extends JFrame {
 	
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
-	private final static int TABLE_SIZE = 29;
+	protected final static int TABLE_SIZE = 29;
 	private JMenuBar menuBar;
 	private JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
 	private JMenuItem nextItem, prevItem, firstItem, lastItem, findByAccount, findBySurname, listAll;
@@ -23,7 +23,7 @@ public class BankApplication extends JFrame {
 	private JButton firstItemButton, lastItemButton, nextItemButton, prevItemButton;
 	private JLabel accountIDLabel, accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
 	private JTextField accountIDTextField, accountNumberTextField, firstNameTextField, surnameTextField, accountTypeTextField, balanceTextField, overdraftTextField;
-	private static JFileChooser fc;
+	protected static JFileChooser fc;
 	private JTable jTable;
 	private double interestRate;
 	
@@ -481,7 +481,6 @@ public class BankApplication extends JFrame {
 				
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
-						//comment out both found statements and test the withdraw!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						found = true;
 						String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
 						
@@ -551,195 +550,30 @@ public class BankApplication extends JFrame {
 	
 	}
 	
-	private static RandomAccessFile input;
-	private static RandomAccessFile output;
+	protected static RandomAccessFile input;
+	protected static RandomAccessFile output;
 
-	
-	private static void openFileRead()
-	   {
-		
-		table.clear();
-			
-		fc = new JFileChooser();
-		int returnVal = fc.showOpenDialog(null);
-		 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-
-        } else {
-                }
-
-			
-		      try // open file
-		      {
-		    	  if(fc.getSelectedFile()!=null)
-		    		  input = new RandomAccessFile( fc.getSelectedFile(), "r" );
-		      } // end try
-		      catch ( IOException ioException )
-		      {
-		    	  JOptionPane.showMessageDialog(null, "File Does Not Exist.");
-		      } // end catch
-			
-	   } // end method openFile
-	
 	static String fileToSaveAs = "";
 	
-	private static void openFileWrite()
-	   {
-		if(fileToSaveAs!=""){
-	      try // open file
-	      {
-	         output = new RandomAccessFile( fileToSaveAs, "rw" );
-	         JOptionPane.showMessageDialog(null, "Accounts saved to " + fileToSaveAs);
-	      } // end try
-	      catch ( IOException ioException )
-	      {
-	    	  JOptionPane.showMessageDialog(null, "File does not exist.");
-	      } // end catch
-		}
-		else
-			saveToFileAs();
-	   }
-	
-	private static void saveToFileAs()
-	   {
-		
-		fc = new JFileChooser();
-		
-		 int returnVal = fc.showSaveDialog(null);
-         if (returnVal == JFileChooser.APPROVE_OPTION) {
-             File file = fc.getSelectedFile();
-           
-             fileToSaveAs = file.getName();
-             JOptionPane.showMessageDialog(null, "Accounts saved to " + file.getName());
-         } else {
-             JOptionPane.showMessageDialog(null, "Save cancelled by user");
-         }
-        
-     	    
-	         try {
-	        	 if(fc.getSelectedFile()==null){
-	        		 JOptionPane.showMessageDialog(null, "Cancelled");
-	        	 }
-	        	 else
-	        		 output = new RandomAccessFile(fc.getSelectedFile(), "rw" );
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	      
-	      
-	     
-	   }
-	
-	private static void closeFile() 
-	   {
-	      try // close file and exit
-	      {
-	         if ( input != null )
-	            input.close();
-	      } // end try
-	      catch ( IOException ioException )
-	      {
-	         
-	    	  JOptionPane.showMessageDialog(null, "Error closing file.");//System.exit( 1 );
-	      } // end catch
-	   } // end method closeFile
-	
-	private static void readRecords()
-	   {
-	
-	      RandomAccessBankAccount record = new RandomAccessBankAccount();
 
-	      
-
-	      try // read a record and display
-	      {
-	         while ( true )
-	         {
-	            do
-	            {
-	            	if(input!=null)
-	            		record.read( input );
-	            } while ( record.getAccountID() == 0 );
-
-	       
-	            
-	            BankAccount ba = new BankAccount(record.getAccountID(), record.getAccountNumber(), record.getFirstName(),
-	                    record.getSurname(), record.getAccountType(), record.getBalance(), record.getOverdraft());
-	            
-	            
-	            Integer key = Integer.valueOf(ba.getAccountNumber().trim());
-			
-				int hash = (key%TABLE_SIZE);
-		
-				
-				while(table.containsKey(hash)){
-			
-					hash = hash+1;
-				}
-				
-	            table.put(hash, ba);
-		
-
-	         } // end while
-	      } // end try
-	      catch ( EOFException eofException ) // close file
-	      {
-	         return; // end of file was reached
-	      } // end catch
-	      catch ( IOException ioException )
-	      {
-	    	  JOptionPane.showMessageDialog(null, "Error reading file.");
-	         System.exit( 1 );
-	      } // end catch
-	   }
-	
-private static void saveToFile(){
-		
-	
-		RandomAccessBankAccount record = new RandomAccessBankAccount();
-	
-	      for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-			   record.setAccountID(entry.getValue().getAccountID());
-			   record.setAccountNumber(entry.getValue().getAccountNumber());
-			   record.setFirstName(entry.getValue().getFirstName());
-			   record.setSurname(entry.getValue().getSurname());
-			   record.setAccountType(entry.getValue().getAccountType());
-			   record.setBalance(entry.getValue().getBalance());
-			   record.setOverdraft(entry.getValue().getOverdraft());
-			   
-			   if(output!=null){
-			   
-			      try {
-						record.write( output );
-					} catch (IOException u) {
-						u.printStackTrace();
-					}
-			   }
-			   
-			}
-    	  
-	      
-	}
 
 	private static void writeFile(){
-		openFileWrite();
-		saveToFile();
+		OpenFileWrite.openFileWrite();
+		SaveToFile.saveToFile();
 		//addRecords();
-		closeFile();
+		CloseFile.closeFile();
 	}
 	
 	private static void saveFileAs(){
-		saveToFileAs();
-		saveToFile();	
-		closeFile();
+		SaveToFileAs.saveToFileAs();
+		SaveToFile.saveToFile();	
+		CloseFile.closeFile();
 	}
 	
 	private static void readFile(){
-	    openFileRead();
-	    readRecords();
-	    closeFile();		
+	    OpenFileRead.openFileRead();
+	    ReadRecords.readRecords();
+	    CloseFile.closeFile();		
 	}
 	
 	public static void main(String[] args) {
