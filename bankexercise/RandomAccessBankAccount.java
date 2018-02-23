@@ -4,7 +4,6 @@ package bankexercise;
 import java.io.*;
 
 public class RandomAccessBankAccount extends BankAccount {
-	public static final int SIZE = 140;
 	
 	public RandomAccessBankAccount(){
 		this(0, "", "", "", "", 0.0, 0.0);
@@ -46,7 +45,7 @@ public class RandomAccessBankAccount extends BankAccount {
 	}
 	
 	private void writeName(RandomAccessFile file, String name) throws IOException{
-		StringBuffer buffer = null;
+		StringBuffer buffer;
 		
 		if(name!=null)
 			buffer = new StringBuffer(name);

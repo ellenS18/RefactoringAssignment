@@ -485,15 +485,9 @@ public class BankApplication extends JFrame {
 						found = true;
 						String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
 						
-				/*		entry.getValue().setBalance(entry.getValue().getBalance() + Double.parseDouble(toWithdraw));
-						displayDetails(entry.getKey());
-						//balanceTextField.setText(entry.getValue().getBalance()+"");
-					}
-				}
-				if (!found)
-					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
+				
 			
-						*/
+					
 						if(entry.getValue().getAccountType().trim().equals("Current")){
 							if(Double.parseDouble(toWithdraw) > entry.getValue().getBalance() + entry.getValue().getOverdraft())
 								JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
@@ -512,6 +506,8 @@ public class BankApplication extends JFrame {
 						}
 					}					
 				}
+				if (!found)
+					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
 			}
 		});
 		
