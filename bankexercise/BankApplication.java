@@ -335,7 +335,7 @@ public class BankApplication extends JFrame {
 		
 				JFrame frame = new JFrame("TableDemo");
 			
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				String col[] = {"ID","Number","Name", "Account Type", "Balance", "Overdraft"};
 				
 				DefaultTableModel tableModel = new DefaultTableModel(col, 0);
